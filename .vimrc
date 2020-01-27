@@ -14,13 +14,21 @@ Plugin 'gmarik/Vundle.vim'
 "add all your plugins here (note older versions of Vundle used Bundle instead of Plugin)
 Plugin 'tmhedberg/SimpylFold'
 Plugin 'vim-scripts/indentpython.vim'
-Bundle 'Valloric/YouCompleteMe'
-Plugin 'vim-syntastic/syntastic'
+Plugin 'Valloric/YouCompleteMe'
 Plugin 'nvie/vim-flake8'
 Plugin 'haya14busa/is.vim'
 Plugin 'nelstrom/vim-visual-star-search'
 Plugin 'junegunn/fzf.vim'
 Plugin 'mhinz/vim-grepper'
+Plugin 'vim-airline/vim-airline'
+
+
+" vuejs
+" Plugin 'posva/vim-vue'
+" Plugin 'ap/vim-css-color'
+
+"ale
+Plugin 'dense-analysis/ale'
 
 
 "color scheme
@@ -87,9 +95,10 @@ au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
 set encoding=utf-8
 
 " Auto-Complete
+let g:ycm_show_diagnostics_ui = 0
 let g:ycm_autoclose_preview_window_after_completion=1
 map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
-"let g:ycm_key_invoke_completion = '<C-Space>'
+let g:ycm_key_invoke_completion = '<C-Space>'
 inoremap <expr> <C-x><C-l> CloseYcmIfOpen()
 function! CloseYcmIfOpen()
   if pumvisible()
@@ -97,6 +106,12 @@ function! CloseYcmIfOpen()
   endif
   return "\<C-x>\<C-l>"
 endfunction
+
+" Set this. Airline will handle the rest.
+let g:airline#extensions#ale#enabled = 1
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
 " Syntax Checking/Highlighting
 let python_highlight_all=1
@@ -107,7 +122,7 @@ let g:gruvbox_bold = 0
 let g:gruvbox_italic=1
 let g:gruvbox_contrast_dark='hard'
 colorscheme gruvbox
-set termguicolors
+" set termguicolors
 set bg=dark
 
 " Want to hide .pyc files
@@ -117,7 +132,9 @@ let NERDTreeIgnore=['\.pyc$', '\~$'] "ignore files in NERDTree
 set nu
 
 "System Clipboard
-set clipboard=unnamed
+set clipboard=unnamedplus
+noremap <Leader>y "+y
+noremap <Leader>p "+p
 
 " nerdtree
 map <F3> :NERDTreeTabsToggle<CR>
@@ -137,14 +154,14 @@ set smartcase
 nnoremap <silent> <leader><space> :noh<cr>
 
 "syntax
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+" set statusline+=%#warningmsg#
+" set statusline+=%{SyntasticStatuslineFlag()}
+" set statusline+=%*
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
 
 nnoremap <Leader>r :%s///g<Left><Left>
 nnoremap <Leader>rc :%s///gc<Left><Left><Left>
@@ -194,3 +211,4 @@ xmap <Leader>R
 " add yaml stuffs
 au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
 autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+
